@@ -1,0 +1,93 @@
+## Proxies
+
+# Forward Proxy:
+Sits before sending request to public internet from private
+Like tele caller for restaurent orders
+Internal Proxy of the company, where all employees requests are being monitored and blocked if it is not relavant
+- Checks the safety of the request
+- Accessibility of the resource (cdlx blocks social networking sites)
+- caching
+- Monitoring
+
+
+# reverse proxy
+Sites infrom of public to web server
+Like a receptionist infrom of Restaurent to redirect to available table
+
+- Load balances
+- caching
+- Accessibility
+- SSL connection
+
+NGINIX commonly used
+
+Kubernetes - INGRESS
+
+Node - Express JS
+
+This is different from Cloud load balancer, cloud load balancer will have specific protocoal to balance the load like, sticky session, Wieghted routing, IP Hashing, Latency based routing
+
+## Whats Is Load Balancer, API Gateway, Reverse Proxy
+Load Balance: Balances the traffic with out much intelligence and verification process (Apply predefined strategies, like availability, weighted routing, IP hashing way, round robin)
+Example: Like parking lot in airport (based on availibility of parkings in each level)
+
+API Gateway: Redirecting based on request 
+Like: Airlines specific routing
+ex: api/payment
+api/authentication
+api/order
+api/user
+
+Reverse Proxy (NGINIX):
+After API Gateway another layer of 
+
+
+USER -> Reverse proxy.      ------------>.    API Gate way  -------------------> Load Balancer
+        SSL/TLS Termination                 Across different microservices      Distribute to nodes
+        Caching                             api/orders, api/payment etc         (private servers)
+
+
+https://www.youtube.com/watch?v=Q4XUptm9S8w
+
+Kubernetes: https://www.youtube.com/watch?v=MTHGoGUFpvE
+
+## Kebernetes Logs
+
+I use this simple 3-step logs flow that helps me debug almost anything in Kubernetes under 30 minutes.
+
+𝗦𝘁𝗲𝗽 1 → kubectl logs <pod>
+
+Ask: “Did the app fail inside the container?”
+
+If the pod is up, this is your first stop.
+Look for stack traces, startup errors, misconfigs.
+But if logs show nothing (or the pod never started), move on fast.
+
+𝗦𝘁𝗲𝗽 2 → kubectl describe pod <pod>
+
+Ask: “Did Kubernetes kill the pod?”
+
+This one’s underrated. It shows you probe failures, CrashLoops, image pull issues, and mount errors. Basically, if K8s is mad at your pod, this will tell you why.
+
+𝗦𝘁𝗲𝗽 3 → kubectl get events --sort-by=.metadata.creationTimestamp
+
+Ask: “What else is breaking in the cluster?”
+
+This is your timeline. It shows broader issues: node pressure, CNI problems, preemptions.
+If the problem isn’t in logs or describe, this one usually holds the clue.
+
+This is the exact flow we use inside incident war rooms.
+
+➤ If the pod is running → check logs.
+
+➤ If it’s crashing or pending → check describe.
+
+➤ If you’re still lost → check events.
+
+Don’t waste 45 minutes staring at Grafana hoping something makes sense.
+Start with the logs. Ask better questions. Fix faster.
+
+I built a 1-page cheatsheet of this debugging flow. It’s part of our SRE onboarding at Infra360.
+
+Want it?
+Drop a “LOGS” in the comments and I’ll send it to you.

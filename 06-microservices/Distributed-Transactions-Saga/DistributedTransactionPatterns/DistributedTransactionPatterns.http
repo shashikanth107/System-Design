@@ -1,0 +1,6 @@
+@DistributedTransactionPatterns_HostAddress = http://localhost:0
+
+GET {{DistributedTransactionPatterns_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
